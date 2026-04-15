@@ -1,0 +1,152 @@
+.villains {
+  padding: 8rem 4rem;
+  background: var(--dark);
+  position: relative;
+}
+
+.villains::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse at 20% 50%, rgba(230,36,41,0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 50%, rgba(13,27,75,0.1) 0%, transparent 50%);
+}
+
+.villains-header {
+  text-align: center;
+  margin-bottom: 4rem;
+  position: relative;
+  z-index: 1;
+}
+
+.villains-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  max-width: 1100px;
+  margin: 0 auto 4rem;
+  border: 1px solid rgba(255,255,255,0.06);
+  position: relative;
+  z-index: 1;
+}
+
+.villain-card {
+  position: relative;
+  padding: 2.5rem 2rem;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.05);
+  cursor: none;
+  transition: background 0.3s, border-color 0.3s;
+  overflow: hidden;
+}
+
+.villain-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--v-color) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.villain-card:hover::before,
+.villain-card.active::before { opacity: 0.08; }
+
+.villain-card:hover { border-color: var(--v-color); }
+.villain-card.active { border-color: var(--v-color); }
+
+.vc-symbol {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  display: block;
+  filter: drop-shadow(0 0 10px var(--v-color));
+}
+
+.vc-threat {
+  display: inline-block;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  padding: 0.2rem 0.6rem;
+  margin-bottom: 0.8rem;
+  border-radius: 2px;
+}
+
+.vc-threat[data-level="EXTREME"] {
+  background: rgba(230,36,41,0.2);
+  color: var(--red);
+  border: 1px solid rgba(230,36,41,0.4);
+}
+.vc-threat[data-level="HIGH"] {
+  background: rgba(245,200,66,0.15);
+  color: #f5c842;
+  border: 1px solid rgba(245,200,66,0.3);
+}
+.vc-threat[data-level="MED"] {
+  background: rgba(41,82,204,0.2);
+  color: #6a8fff;
+  border: 1px solid rgba(41,82,204,0.4);
+}
+
+.vc-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 0.06em;
+  color: var(--white);
+  margin-bottom: 0.3rem;
+}
+
+.vc-alter {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: rgba(240,237,230,0.35);
+  margin-bottom: 0.5rem;
+}
+
+.vc-desc {
+  font-size: 0.85rem;
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(240,237,230,0.55);
+  margin-top: 1rem;
+  overflow: hidden;
+}
+
+.vc-expand {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  font-size: 1.2rem;
+  color: rgba(240,237,230,0.2);
+  font-family: monospace;
+  transition: color 0.3s, transform 0.3s;
+}
+
+.villain-card:hover .vc-expand { color: var(--v-color); }
+.villain-card.active .vc-expand { color: var(--v-color); transform: rotate(45deg); }
+
+.villains-cta {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.villains-cta p {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: rgba(240,237,230,0.5);
+  margin-bottom: 1.5rem;
+  font-style: italic;
+}
+
+@media (max-width: 900px) {
+  .villains-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .villains { padding: 5rem 1.5rem; }
+  .villains-grid { grid-template-columns: 1fr; }
+}
