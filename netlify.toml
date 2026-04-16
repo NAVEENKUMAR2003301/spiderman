@@ -1,0 +1,35 @@
+# netlify.toml
+
+[build]
+  publish = "dist"  # or "build", "public" - your build output directory
+  command = "npm run build"  # your build command
+
+# Headers to fix MIME types
+[[headers]]
+  # Apply to all JavaScript files
+  for = "/*.js"
+  [headers.values]
+    Content-Type = "application/javascript"
+
+[[headers]]
+  # Apply to all .mjs module files
+  for = "/*.mjs"
+  [headers.values]
+    Content-Type = "application/javascript"
+
+[[headers]]
+  # Apply to WebAssembly files
+  for = "/*.wasm"
+  [headers.values]
+    Content-Type = "application/wasm"
+
+# If your modules are in subdirectories
+[[headers]]
+  for = "/assets/*.js"
+  [headers.values]
+    Content-Type = "application/javascript"
+
+[[headers]]
+  for = "/static/*.js"
+  [headers.values]
+    Content-Type = "application/javascript"
