@@ -111,7 +111,7 @@
 }
 
 .nav-cta::before {
-  content: attr(data-hover);
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
