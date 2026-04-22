@@ -8,6 +8,7 @@ import Gallery from "./components/Gallery";
 import Footer from "./components/Footer";
 import Cursor from "./components/Cursor";
 import Navbar from "./components/Navbar";
+import SpiderManFightGame from "./components/SpiderManFightGame";
 import "./App.css";
 
 function SpiderWeb() {
@@ -106,6 +107,9 @@ export default function App() {
           <Villains />
           <Gallery />
           <Footer />
+          <div id="game">
+            <SpiderManFightGame />
+          </div>
         </div>
       )}
     </>
