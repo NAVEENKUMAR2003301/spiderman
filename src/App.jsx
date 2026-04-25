@@ -106,10 +106,10 @@ export default function App() {
           <Powers />
           <Villains />
           <Gallery />
-          <Footer />
           <div id="game">
             <SpiderManFightGame />
           </div>
+          <Footer />
         </div>
       )}
     </>

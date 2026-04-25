@@ -44,7 +44,7 @@ export default function Footer() {
                 <h4>{col.title}</h4>
                 <ul>
                   {col.links.map(l => (
-                    <li key={l}><a href="#" data-hover>{l}</a></li>
+                    <li key={l}><a href="./SpiderManFightGame" data-hover>{l}</a></li>
                   ))}
                 </ul>
               </div>
