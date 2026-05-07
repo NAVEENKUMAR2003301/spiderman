@@ -718,9 +718,6 @@ export default function Hero() {
       size: Math.random() * 1.2 + 0.3, alpha: Math.random() * 0.4 + 0.08,
     }));
 
-    let swingAngle = -Math.PI / 4, swingVel = 0.018, swingDir = 1;
-    const ANCHOR_X_RATIO = 0.72, ANCHOR_Y_RATIO = 0.08, ROPE_LEN_RATIO = 0.32;
-
     const buildings = [
       { x: 0, w: 90, h: 340 }, { x: 80, w: 55, h: 270 }, { x: 125, w: 110, h: 430 },
       { x: 225, w: 55, h: 230 }, { x: 270, w: 95, h: 370 }, { x: 355, w: 75, h: 295 },
@@ -730,34 +727,6 @@ export default function Hero() {
       { x: 1220, w: 85, h: 330 }, { x: 1295, w: 155, h: 490 }, { x: 1440, w: 95, h: 300 },
       { x: 1525, w: 75, h: 370 }, { x: 1590, w: 130, h: 445 },
     ];
-
-    const drawSpiderSilhouette = (x, y, size, angle) => {
-      ctx.save();
-      ctx.translate(x, y);
-      ctx.rotate(angle * 0.3);
-      ctx.scale(size, size);
-      const glow = ctx.createRadialGradient(0, 0, 2, 0, 0, 18);
-      glow.addColorStop(0, "rgba(230,36,41,0.9)");
-      glow.addColorStop(0.4, "rgba(180,10,10,0.6)");
-      glow.addColorStop(1, "rgba(230,36,41,0)");
-      ctx.fillStyle = glow;
-      ctx.beginPath(); ctx.arc(0, 0, 18, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = "#cc1a1a";
-      ctx.beginPath(); ctx.ellipse(0, 0, 5, 8, 0, 0, Math.PI * 2); ctx.fill();
-      ctx.beginPath(); ctx.arc(0, -10, 4.5, 0, Math.PI * 2); ctx.fill();
-      ctx.strokeStyle = "#cc1a1a"; ctx.lineWidth = 1.8;
-      [[-1], [1]].forEach(([dx]) => {
-        ctx.beginPath(); ctx.moveTo(dx * 3, -4); ctx.quadraticCurveTo(dx * 14, -14, dx * 18, -8); ctx.stroke();
-      });
-      [[-1, 1], [1, 1], [-1, 0.5], [1, 0.5]].forEach(([dx, dy]) => {
-        ctx.beginPath(); ctx.moveTo(dx * 3, 4); ctx.quadraticCurveTo(dx * 12, 10 * dy, dx * 16, 18 * dy); ctx.stroke();
-      });
-      ctx.fillStyle = "rgba(255,255,255,0.9)";
-      [[-2.5, -10.5], [2.5, -10.5]].forEach(([ex, ey]) => {
-        ctx.beginPath(); ctx.ellipse(ex, ey, 2, 1.4, -0.3, 0, Math.PI * 2); ctx.fill();
-      });
-      ctx.restore();
-    };
 
     const draw = () => {
       const W = canvas.width, H = canvas.height;
@@ -834,21 +803,6 @@ export default function Hero() {
         ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(230,36,41,${p.alpha})`; ctx.fill();
       });
-      swingAngle += swingVel * swingDir;
-      if (Math.abs(swingAngle) > Math.PI / 3) swingDir *= -1;
-      const anchorX = W * ANCHOR_X_RATIO, anchorY = H * ANCHOR_Y_RATIO, ropeLen = H * ROPE_LEN_RATIO;
-      const spiderX = anchorX + Math.sin(swingAngle) * ropeLen, spiderY = anchorY + Math.cos(swingAngle) * ropeLen;
-      ctx.beginPath(); ctx.moveTo(anchorX, anchorY);
-      const cpX = anchorX + Math.sin(swingAngle * 0.5) * 30, cpY = anchorY + ropeLen * 0.4;
-      ctx.quadraticCurveTo(cpX, cpY, spiderX, spiderY);
-      ctx.strokeStyle = "rgba(255,255,255,0.3)"; ctx.lineWidth = 1.5;
-      ctx.shadowColor = "rgba(255,255,255,0.3)"; ctx.shadowBlur = 3; ctx.stroke(); ctx.shadowBlur = 0;
-      for (let d = 0.2; d < 0.9; d += 0.2) {
-        const rx = anchorX + (spiderX - anchorX) * d + Math.sin(t * 3 + d * 10) * 2;
-        const ry = anchorY + (spiderY - anchorY) * d + Math.sin(t * 2 + d * 8) * 2;
-        ctx.beginPath(); ctx.arc(rx, ry, 1.5, 0, Math.PI * 2); ctx.fillStyle = "rgba(180,210,255,0.5)"; ctx.fill();
-      }
-      drawSpiderSilhouette(spiderX, spiderY, 1.4 + Math.sin(t * 2) * 0.05, swingAngle);
       if (Math.sin(t * 7.3) > 0.985) { ctx.fillStyle = "rgba(180,200,255,0.04)"; ctx.fillRect(0, 0, W, H); }
       const vig = ctx.createRadialGradient(W / 2, H / 2, H * 0.2, W / 2, H / 2, H * 0.85);
       vig.addColorStop(0, "transparent"); vig.addColorStop(1, "rgba(0,0,0,0.65)");
@@ -940,7 +894,7 @@ export default function Hero() {
           </motion.div>
 
           <div className="hero-title-wrap">
-            {["YOUR", "FRIENDLY", ""].map((word, i) => (
+            {["YOUR", "FRIENDLY", "NAVI"].map((word, i) => (
               <motion.div key={word} className={`title-line-wrap ${word === "FRIENDLY" ? "accent-wrap" : ""}`}
                 initial={{ opacity: 0, x: -80 }} animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5 + i * 0.15, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}>

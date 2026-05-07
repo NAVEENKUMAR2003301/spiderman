@@ -79,7 +79,7 @@ export default function App() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
             >
-              WITH GREAT POWER...
+              With great power, there must also come great responsibility.
             </motion.p>
             <motion.div
               className="loader-bar-wrap"
