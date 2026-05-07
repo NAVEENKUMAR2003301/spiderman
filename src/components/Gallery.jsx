@@ -15,6 +15,19 @@ const facts = [
   { n: "$25B", l: "Franchise Value" },
 ];
 
+// Image URLs for each mosaic cell (0-8)
+const cellImages = [
+  "https://cdn.marvel.com/u/prod/marvel/i/mg/f/10/598363848588e/clean.jpg",        // 0: Amazing Fantasy #15
+  "https://wallpapers-clan.com/wp-content/uploads/2025/04/spider-man-noir-shadow-city-desktop-wallpaper-preview.jpg", // 1: Noir shadows
+  "https://www.shutterstock.com/shutterstock/videos/3421474481/thumb/2.jpg?ip=x480", // 2: Web
+  "https://4kwallpapers.com/images/wallpapers/marvel-logo-dark-1280x1280-22111.jpg",   // 3: Marvel logo
+  "https://static0.srcdn.com/wordpress/wp-content/uploads/2022/03/Spider-Man-No-Way-Home-Final-Suit.jpg", // 4: MCU suit
+  "https://static01.nyt.com/images/2019/01/27/arts/27spider-man-anatomy1/spider-man-anatomy-videoSixteenByNine3000.jpg?auto=webp&quality=30&disable=upscale&format=pjpg", // 5: Into Spider-Verse
+  "https://i.ebayimg.com/images/g/6oIAAOSwtbtjE7Up/s-l400.jpg", // 6: 1962 vintage
+  "https://static01.nyt.com/images/2021/09/14/arts/09spider-man-image1/09spider-man-image1-articleLarge.jpg?quality=75&auto=webp&disable=upscale", // 7: Comic art
+  "https://static.wikia.nocookie.net/amazingspiderman/images/e/e5/Electro_promotional.png/revision/latest?cb=20231030121025", // 8: Electro/lightning
+];
+
 export default function Gallery() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
@@ -60,7 +73,7 @@ export default function Gallery() {
           ))}
         </motion.div>
 
-        {/* Mosaic grid */}
+        {/* Mosaic grid with images */}
         <div className="mosaic">
           {[...Array(9)].map((_, i) => (
             <motion.div
@@ -71,7 +84,7 @@ export default function Gallery() {
               transition={{ delay: 0.1 + i * 0.07, duration: 0.6 }}
               whileHover={{ scale: 1.03, zIndex: 10 }}
             >
-              <MosaicContent index={i} />
+              <MosaicContent index={i} imageUrl={cellImages[i]} />
             </motion.div>
           ))}
         </div>
@@ -97,26 +110,37 @@ export default function Gallery() {
   );
 }
 
-function MosaicContent({ index }) {
+function MosaicContent({ index, imageUrl }) {
   const configs = [
-    { bg: "#0d1b4b", content: "AMAZING\nSPIDER-MAN", type: "text", accent: "#e62429" },
-    { bg: "#1a0505", content: "WEB OF\nSHADOWS", type: "text", accent: "#e62429" },
-    { bg: "#0a0a0a", content: "🕷️", type: "emoji", size: "4rem" },
-    { bg: "#050d1e", content: "MARVEL\nCOMICS", type: "text", accent: "#2952cc" },
-    { bg: "#e62429", content: "PETER\nPARKER", type: "text", accent: "#fff" },
-    { bg: "#0d1b4b", content: "🕸️", type: "emoji", size: "3rem" },
-    { bg: "#1a0505", content: "SINCE\n1962", type: "text", accent: "#f5c842" },
-    { bg: "#080d20", content: "INTO THE\nSPIDERVERSE", type: "text", accent: "#ff6b9d" },
-    { bg: "#0d0d0d", content: "⚡", type: "emoji", size: "3.5rem" },
+    { label: "AMAZING\nSPIDER-MAN", accent: "#e62429" },
+    { label: "WEB OF\nSHADOWS", accent: "#e62429" },
+    { label: "", accent: "#e62429" }, // emoji cell
+    { label: "MARVEL\nCOMICS", accent: "#2952cc" },
+    { label: "PETER\nPARKER", accent: "#fff" },
+    { label: "", accent: "#ff6b9d" }, // emoji cell
+    { label: "SINCE\n1962", accent: "#f5c842" },
+    { label: "INTO THE\nSPIDERVERSE", accent: "#ff6b9d" },
+    { label: "", accent: "#ffd700" }, // emoji cell
   ];
+
   const c = configs[index] || configs[0];
+  const emojis = ["", "", "🕷️", "", "", "🕸️", "", "", "⚡"];
+
   return (
-    <div className="mc-inner" style={{ background: c.bg }}>
-      {c.type === "emoji"
-        ? <span style={{ fontSize: c.size }}>{c.content}</span>
-        : <span className="mc-text" style={{ color: c.accent }}>{c.content}</span>
-      }
-      <div className="mc-overlay" />
+    <div className="mc-inner" style={{ backgroundImage: `url(${imageUrl})` }}>
+      {/* Dark overlay for text readability */}
+      <div className="mc-img-overlay" />
+
+      {/* Content on top */}
+      {index === 2 || index === 5 || index === 8 ? (
+        <span className="mc-emoji" style={{ fontSize: index === 2 ? "4rem" : index === 8 ? "3.5rem" : "3rem" }}>
+          {emojis[index]}
+        </span>
+      ) : (
+        <span className="mc-text" style={{ color: c.accent }}>{c.label}</span>
+      )}
+
+      <div className="mc-hover-overlay" />
     </div>
   );
 }

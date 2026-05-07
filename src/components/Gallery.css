@@ -88,8 +88,10 @@
 .mosaic-cell {
   overflow: hidden;
   position: relative;
+  border-radius: 4px;
 }
 
+/* Inner container with background image */
 .mc-inner {
   width: 100%;
   height: 100%;
@@ -97,13 +99,42 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  transition: filter 0.3s;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: transform 0.4s ease, filter 0.3s ease;
+}
+
+/* Dark overlay for text readability over images */
+.mc-img-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.7) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Hover overlay */
+.mc-hover-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(230,36,41,0.1) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.mosaic-cell:hover .mc-hover-overlay {
+  opacity: 1;
 }
 
 .mosaic-cell:hover .mc-inner {
-  filter: brightness(1.2);
+  transform: scale(1.08);
+  filter: brightness(1.1) contrast(1.05);
 }
 
+/* Text styling */
 .mc-text {
   font-family: 'Bebas Neue', sans-serif;
   font-size: clamp(1rem, 2.5vw, 1.8rem);
@@ -111,14 +142,17 @@
   text-align: center;
   white-space: pre-line;
   line-height: 1.1;
-  text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+  text-shadow: 0 2px 20px rgba(0,0,0,0.8), 0 0 40px rgba(0,0,0,0.5);
+  position: relative;
+  z-index: 3;
+  font-weight: 700;
 }
 
-.mc-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(0,0,0,0.2) 0%, transparent 60%);
-  pointer-events: none;
+/* Emoji styling */
+.mc-emoji {
+  position: relative;
+  z-index: 3;
+  filter: drop-shadow(0 2px 10px rgba(0,0,0,0.5));
 }
 
 /* Quotes */
@@ -162,17 +196,24 @@
   text-transform: uppercase;
 }
 
+/* Responsive */
 @media (max-width: 900px) {
   .gallery { padding: 5rem 1.5rem; }
   .mosaic {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: auto;
+    gap: 8px;
   }
   .cell-0, .cell-1, .cell-2, .cell-3, .cell-4,
   .cell-5, .cell-6, .cell-7 {
     grid-column: auto;
     grid-row: auto;
+    min-height: 160px;
   }
   .quotes-row { grid-template-columns: 1fr; }
   .facts-strip { flex-wrap: wrap; }
+  
+  .mc-text {
+    font-size: clamp(1.2rem, 4vw, 1.6rem);
+  }
 }

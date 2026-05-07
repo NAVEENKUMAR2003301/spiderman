@@ -33,28 +33,72 @@
 
 .villain-card {
   position: relative;
-  padding: 2.5rem 2rem;
-  background: rgba(255,255,255,0.02);
+  min-height: 320px;
+  cursor: pointer;
+  transition: border-color 0.3s;
+  overflow: hidden;
   border: 1px solid rgba(255,255,255,0.05);
-  cursor: none;
-  transition: background 0.3s, border-color 0.3s;
+}
+
+/* Background image layer - separate image handling */
+.vc-bg {
+  position: absolute;
+  inset: 0;
   overflow: hidden;
 }
 
-.villain-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, var(--v-color) 0%, transparent 60%);
-  opacity: 0;
-  transition: opacity 0.4s;
+.vc-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transition: transform 0.6s ease, filter 0.4s ease;
+  display: block;
 }
 
-.villain-card:hover::before,
-.villain-card.active::before { opacity: 0.08; }
+/* Dark overlay for readability */
+.vc-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg, 
+    rgba(0,0,0,0.3) 0%, 
+    rgba(0,0,0,0.6) 40%, 
+    rgba(0,0,0,0.85) 100%
+  );
+  transition: background 0.4s ease;
+  z-index: 1;
+}
 
-.villain-card:hover { border-color: var(--v-color); }
-.villain-card.active { border-color: var(--v-color); }
+/* Hover effects */
+.villain-card:hover .vc-bg-img {
+  transform: scale(1.1);
+  filter: brightness(1.1) contrast(1.1);
+}
+
+.villain-card:hover .vc-bg-overlay {
+  background: linear-gradient(
+    180deg, 
+    rgba(0,0,0,0.2) 0%, 
+    rgba(0,0,0,0.5) 40%, 
+    rgba(0,0,0,0.8) 100%
+  );
+}
+
+.villain-card.active .vc-bg-img {
+  transform: scale(1.05);
+}
+
+/* Content layer */
+.vc-content {
+  position: relative;
+  z-index: 2;
+  padding: 2.5rem 2rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
 
 .vc-symbol {
   font-size: 2.5rem;
@@ -71,37 +115,42 @@
   padding: 0.2rem 0.6rem;
   margin-bottom: 0.8rem;
   border-radius: 2px;
+  width: fit-content;
 }
 
 .vc-threat[data-level="EXTREME"] {
-  background: rgba(230,36,41,0.2);
+  background: rgba(230,36,41,0.25);
   color: var(--red);
-  border: 1px solid rgba(230,36,41,0.4);
+  border: 1px solid rgba(230,36,41,0.5);
+  backdrop-filter: blur(4px);
 }
 .vc-threat[data-level="HIGH"] {
-  background: rgba(245,200,66,0.15);
+  background: rgba(245,200,66,0.2);
   color: #f5c842;
-  border: 1px solid rgba(245,200,66,0.3);
+  border: 1px solid rgba(245,200,66,0.4);
+  backdrop-filter: blur(4px);
 }
 .vc-threat[data-level="MED"] {
-  background: rgba(41,82,204,0.2);
+  background: rgba(41,82,204,0.25);
   color: #6a8fff;
-  border: 1px solid rgba(41,82,204,0.4);
+  border: 1px solid rgba(41,82,204,0.5);
+  backdrop-filter: blur(4px);
 }
 
 .vc-name {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.4rem;
-  letter-spacing: 0.06em;
+  font-size: 1.6rem;
+  letter-spacing: 0.08em;
   color: var(--white);
   margin-bottom: 0.3rem;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.8);
 }
 
 .vc-alter {
   font-family: 'Space Mono', monospace;
   font-size: 0.65rem;
   letter-spacing: 0.1em;
-  color: rgba(240,237,230,0.35);
+  color: rgba(240,237,230,0.5);
   margin-bottom: 0.5rem;
 }
 
@@ -109,23 +158,40 @@
   font-size: 0.85rem;
   font-weight: 300;
   line-height: 1.7;
-  color: rgba(240,237,230,0.55);
+  color: rgba(240,237,230,0.75);
   margin-top: 1rem;
   overflow: hidden;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.6);
 }
 
 .vc-expand {
   position: absolute;
   top: 1.5rem;
   right: 1.5rem;
-  font-size: 1.2rem;
-  color: rgba(240,237,230,0.2);
+  font-size: 1.5rem;
+  color: rgba(255,255,255,0.4);
   font-family: monospace;
   transition: color 0.3s, transform 0.3s;
+  z-index: 3;
+  background: rgba(0,0,0,0.4);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  backdrop-filter: blur(4px);
 }
 
-.villain-card:hover .vc-expand { color: var(--v-color); }
-.villain-card.active .vc-expand { color: var(--v-color); transform: rotate(45deg); }
+.villain-card:hover .vc-expand { 
+  color: var(--v-color); 
+  background: rgba(0,0,0,0.6);
+}
+.villain-card.active .vc-expand { 
+  color: var(--v-color); 
+  transform: rotate(45deg); 
+  background: rgba(0,0,0,0.6);
+}
 
 .villains-cta {
   text-align: center;
@@ -142,11 +208,45 @@
   font-style: italic;
 }
 
+/* Button styles */
+.btn-primary {
+  background: var(--red);
+  color: var(--white);
+  border: none;
+  padding: 1rem 2.5rem;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary:hover {
+  background: #ff2a2a;
+  transform: translateY(-2px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Responsive */
 @media (max-width: 900px) {
-  .villains-grid { grid-template-columns: repeat(2, 1fr); }
+  .villains-grid { 
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 8px;
+  }
+  .villain-card { min-height: 280px; }
 }
 
 @media (max-width: 600px) {
   .villains { padding: 5rem 1.5rem; }
-  .villains-grid { grid-template-columns: 1fr; }
+  .villains-grid { 
+    grid-template-columns: 1fr; 
+    gap: 12px;
+  }
+  .villain-card { min-height: 300px; }
+  .vc-name { font-size: 1.8rem; }
 }

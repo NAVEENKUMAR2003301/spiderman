@@ -240,7 +240,16 @@ export default function Hero() {
           transition={{ delay: 1.5, duration: 0.6 }}
         >
           <button className="btn-primary" data-hover>DISCOVER THE LEGEND</button>
-          <button className="btn-ghost" data-hover>WATCH TRAILER</button>
+          <button className="btn-ghost text-white" data-hover>
+            <a
+              href="https://youtu.be/aBlsrtxuwss?si=uF6_97vWvNd7EMWz"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white no-underline"
+            >
+              WATCH TRAILER
+            </a>
+          </button>
         </motion.div>
 
         <motion.div
